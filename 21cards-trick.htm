@@ -1,0 +1,122 @@
+
+<!-- 21 Cards Magic Trick - Simulator by Elias Bachaalany -->
+<html>
+<head>
+    <title>21 Cards Magic Trick - Simulator by Elias Bachaalany</title>
+</head>
+<body>
+    <center>
+    21 Cards Magic Trick - Simulator<br/>
+    (c) <u>Elias Bachaalany</u><br/> elias.bachaalany at gmail dot com
+    </center>
+<hr/>
+<script>
+//
+// 21 Cards Magic Trick - Simulator (c) Elias Bachaalany <elias.bachaalany at gmail dot com>
+//
+// ----------------------------------------------------------
+// Define the max items
+MAX_ROWS = 7;
+MAX_COLS = 3;
+
+MAX = MAX_COLS * MAX_ROWS;
+
+// ----------------------------------------------------------
+// Define the shuffling table:
+// Row: col position of the desired card
+// Col: where the new col should be
+SHUFFLE_TABLE = [
+    [1, 0, 2],  // Col 0 -> Col 1
+    [0, 1, 2],  // Col 1 -> Col 1
+    [0, 2, 1]   // Col 2 -> Col 1
+];
+
+// ----------------------------------------------------------
+function shuffle_array(pos, arr)
+{
+    var D = Array();
+    for (var t=0; t< MAX_COLS; t++)
+    {
+        n = SHUFFLE_TABLE[pos][t];
+        for (var i=0; i< MAX_ROWS;i++)
+            D[D.length] = arr[n + (i * MAX_COLS)]
+    }
+
+    return D;
+}
+
+// ----------------------------------------------------------
+function get_new_table()
+{
+    // The initial array
+    var AR = Array();
+    for (var i=1;i<=MAX;i++)
+        AR.push(i);
+
+    return AR;
+}
+
+// ----------------------------------------------------------
+function dump_array(n, Ar)
+{
+    var brk = 0;
+    document.write('<table border="1">');
+    for (var i=0;i<MAX;i++)
+    {
+        if (brk == 0)
+            document.write('<tr>');
+
+        document.write('<td>');
+        var v = Ar[i];
+        if (v == n)
+            document.write('<font color=red><b>');
+
+        document.write(v);
+        if (v == n)
+            document.write('</b></font>');
+
+        document.write('</td>');
+
+        if ((++brk) == MAX_COLS)
+        {
+            document.write('</tr>');
+            brk = 0;
+        }
+    }
+    document.write('</table>');
+}
+
+// ----------------------------------------------------------
+document.write('<table>');
+
+for (var item=1; item<=MAX; item++)
+{
+    document.write('<tr>');
+
+    var Ar = get_new_table();
+
+    // Initial display
+    document.write('<td>');
+    dump_array(item, Ar);
+    document.write('</td>');
+
+    for (var shuffle=0;shuffle<MAX_COLS;shuffle++)
+    {
+        // First shuffle
+        document.write('<td>');
+        
+        var col = Ar.indexOf(item) % MAX_COLS;
+        Ar = shuffle_array(col, Ar);
+        dump_array(item, Ar);
+        
+        document.write('</td>');
+    }
+
+    // New item
+    document.write('</tr>');
+}
+document.write('</table>');
+
+</script>
+</body>
+</html>
